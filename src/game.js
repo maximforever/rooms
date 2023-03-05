@@ -20,7 +20,16 @@ const drawPlayer = () => {
 };
 
 const drawExit = (exit) => {
-  rect(exit.x, exit.y, 25, 50, "orange");
+  if (!exit.hidden) {
+    rect(exit.x, exit.y, 25, 50, "orange");
+  }
+};
+
+const drawGoodie = (goodie) => {
+  if (goodie.eaten) {
+    return;
+  }
+  circle(goodie.x, goodie.y, 3, "purple");
 };
 
 const drawRoom = () => {
@@ -36,6 +45,9 @@ const drawRoom = () => {
     currentRoom.color
   );
 
+  for (goodie of currentRoom.goodies) {
+    drawGoodie(goodie);
+  }
   for (exit of currentRoom.exits) {
     drawExit(exit);
   }
@@ -79,11 +91,33 @@ const movePlayer = () => {
       player.moveRight();
     }
   }
+
+  checkForCollisions();
+};
+
+const checkForCollisions = () => {
+  const { player } = game;
+  for (goodie of game.currentRoom.goodies) {
+    if (
+      !goodie.eaten &&
+      distanceBetween(goodie.x, goodie.y, player.x, player.y) < 10 + 3 // the goodie and player sizes
+    ) {
+      console.log("NOM");
+      goodie.eaten = true;
+      player.goodies++;
+
+      for (exit of game.currentRoom.exits) {
+        if (exit.hidden && player.goodies >= exit.minGoodies) {
+          exit.hidden = false;
+        }
+      }
+    }
+  }
 };
 
 const checkIfExiting = (x, y) => {
   for (exit of game.currentRoom.exits) {
-    if (keys.right || keys.left) {
+    if ((!exit.hidden && keys.right) || keys.left) {
       if (x > exit.x && x < exit.x + 25 && y > exit.y && y < exit.y + 50) {
         if (game.rooms[exit.to] === undefined) {
           throw new Error(`Room '${exit.to}' doesn't exist yet!`);

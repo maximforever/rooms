@@ -11,6 +11,7 @@ let game = {
         x2: 500,
         y2: 500,
       },
+      goodies: [],
       exits: [
         {
           x: 500,
@@ -29,6 +30,23 @@ let game = {
         x2: 200,
         y2: 400,
       },
+      goodies: [
+        {
+          x: 173,
+          y: 85,
+          eaten: false,
+        },
+        {
+          x: 58,
+          y: 387,
+          eaten: false,
+        },
+        {
+          x: 169,
+          y: 264,
+          eaten: false,
+        },
+      ],
       exits: [
         {
           x: 25,
@@ -40,7 +58,8 @@ let game = {
           x: 200,
           y: 300,
           to: "second",
-          hidden: false,
+          hidden: true,
+          minGoodies: 3,
         },
       ],
     },
@@ -53,6 +72,7 @@ let game = {
         x2: 450,
         y2: 400,
       },
+      goodies: [],
       exits: [
         {
           x: 225,

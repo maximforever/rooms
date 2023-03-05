@@ -5,6 +5,7 @@ class Player {
     this.x = 200;
     this.y = 200;
     this.size = 10;
+    this.goodies = 0;
     this.hp = 100;
   }
 
